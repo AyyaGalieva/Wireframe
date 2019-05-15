@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 public class SettingsWindow extends JFrame {
@@ -119,6 +120,16 @@ public class SettingsWindow extends JFrame {
                 cur = splines.size() - 1;
                 switchToSpline(splines.get(cur));
                 spinners.get("spline№").setModel(new SpinnerNumberModel((double)cur, 0, splines.size()-1, 1));
+
+                Random random = new Random();
+                spinners.get("R").setModel(new SpinnerNumberModel((double)random.nextInt(256), 0, 255, 1));
+                spinners.get("G").setModel(new SpinnerNumberModel((double)random.nextInt(256), 0, 255, 1));
+                spinners.get("B").setModel(new SpinnerNumberModel((double)random.nextInt(256), 0, 255, 1));
+
+                spinners.get("Cx").setModel(new SpinnerNumberModel((double)random.nextInt(10)-5, -10, 10, 0.1));
+                spinners.get("Cy").setModel(new SpinnerNumberModel((double)random.nextInt(10)-5, -10, 10, 0.1));
+                spinners.get("Cz").setModel(new SpinnerNumberModel((double)random.nextInt(10)-5, -10, 10, 0.1));
+
                 updateSettings();
             }
         };
@@ -233,9 +244,9 @@ public class SettingsWindow extends JFrame {
 
     public void setSceneColor(Color c){
         sceneColor = c;
-        spinners.get("sceneR").setValue((double)(int)(Integer)c.getRed());
-        spinners.get("sceneG").setValue((double)(int)(Integer)c.getGreen());
-        spinners.get("sceneB").setValue((double)(int)(Integer)c.getBlue());
+        spinners.get("sceneR").setModel(new SpinnerNumberModel((double)(int)(Integer)c.getRed(), 0, 255, 1));
+        spinners.get("sceneG").setModel(new SpinnerNumberModel((double)(int)(Integer)c.getGreen(), 0, 255, 1));
+        spinners.get("sceneB").setModel(new SpinnerNumberModel((double)(int)(Integer)c.getBlue(), 0, 255, 1));
     }
 
     public static Color getSceneColor() {
@@ -267,10 +278,10 @@ public class SettingsWindow extends JFrame {
     }
 
     public void setABCD(double a, double b, double c, double d){
-        spinners.get("a").setModel(new SpinnerNumberModel(Math.min(a, b), 0.0, Math.min(1.0, b), 0.01));
-        spinners.get("b").setModel(new SpinnerNumberModel(Math.max(a, b), Math.max(0.0, a), 1.0, 0.01));
-        spinners.get("c").setModel(new SpinnerNumberModel( Math.min(c, d), 0.0, Math.min(6.283, b), 0.01));
-        spinners.get("d").setModel(new SpinnerNumberModel(Math.max(c, d), Math.max(0.0, a), 6.283, 0.01));
+        spinners.get("a").setModel(new SpinnerNumberModel(Math.min(a, b), 0.0, 1.0, 0.01));
+        spinners.get("b").setModel(new SpinnerNumberModel(Math.max(a, b), 0.0, 1.0, 0.01));
+        spinners.get("c").setModel(new SpinnerNumberModel( Math.min(c, d), 0.0, 6.283, 0.01));
+        spinners.get("d").setModel(new SpinnerNumberModel(Math.max(c, d), 0.0, 6.283, 0.01));
         this.a =  Math.min(a, b);
         this.b =  Math.max(a, b);
         this.c = Math.min(c, d);
@@ -307,8 +318,8 @@ public class SettingsWindow extends JFrame {
     public void setSwSh(double sw, double sh){
         this.sw = sw;
         this.sh = sh;
-        spinners.get("sw").setValue(sw);
-        spinners.get("sh").setValue(sh);
+        spinners.get("sw").setModel(new SpinnerNumberModel(sw, 0.0, 10000.0, 10.0));
+        spinners.get("sh").setModel(new SpinnerNumberModel(sh, 0.0, 10000.0, 10.0));
     }
 
     public double getA() {
